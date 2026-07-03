@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelance Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #3a3b3c;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            transition: width 0.5s ease-in-out;
+            animation: slideInSidebar 1s ease-in-out;
+        }
+
+        .sidebar h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            padding: 15px 10px;
+            color: #b1b1b1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s, transform 0.5s ease-in-out;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #4e4f50;
+            transform: translateX(10px);
+        }
+
+        .sidebar ul li i {
+            margin-right: 15px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            transition: margin-left 0.5s ease-in-out;
+            animation: fadeInMain 1.5s ease-in-out;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 1.5s ease-in-out;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            color: #333;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .profile:hover {
+            transform: scale(1.05);
+        }
+
+        .profile p {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .job-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            animation: slideInBottom 1s ease-in-out;
+        }
+
+        .job-section h2 {
+            margin-bottom: 20px;
+        }
+
+        .job-listing {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+            transition: background 0.3s, transform 0.3s ease-in-out;
+        }
+
+        .job-listing:hover {
+            background-color: #f5f5f5;
+            transform: translateY(-5px);
+        }
+
+        .job-listing p {
+            margin: 0;
+            color: #555;
+        }
+
+        .job-listing a {
+            background-color: #00a885;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.3s ease-in-out;
+        }
+
+        .job-listing a:hover {
+            background-color: #008d73;
+            transform: scale(1.1);
+        }
+
+        .applications, .notifications {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .applications h2, .notifications h2 {
+            margin-bottom: 15px;
+        }
+
+        .notification-list, .application-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .notification-item, .application-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .notification-item:hover, .application-item:hover {
+            transform: scale(1.05);
+        }
+
+        .toggle-menu {
+            display: none;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            color: #fff;
+            font-size: 1.8em;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInBottom {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInSidebar {
+            from {
+                opacity: 0;
+                transform: translateX(-250px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInMain {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media(max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+
+            .toggle-menu {
+                display: block;
+            }
+
+            .sidebar ul li span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <i class="fas fa-bars toggle-menu"></i>
+
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><i class="fas fa-home"></i> <span>Home</span></li>
+            <li><i class="fas fa-briefcase"></i> <span>Job Listings</span></li>
+            <li><i class="fas fa-envelope"></i> <span>Messages</span></li>
+            <li><i class="fas fa-bell"></i> <span>Notifications</span></li>
+            <li><i class="fas fa-user"></i> <span>Profile</span></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Welcome Back, Freelancer!</h1>
+            <div class="profile">
+                <img src="profile-pic.jpg" alt="Profile Picture">
+                <p>John Doe</p>
+            </div>
+        </div>
+
+        <!-- Job Listings Section -->
+        <div class="job-section">
+            <h2>Available Jobs</h2>
+            <div class="job-listing">
+                <p>Frontend Developer - $25/hr</p>
+                <a href="#">Apply</a>
+            </div>
+            <div class="job-listing">
+                <p>Graphic Designer - $20/hr</p>
+                <a href="#">Apply</a>
+            </div>
+            <div class="job-listing">
+                <p>Content Writer - $15/hr</p>
+                <a href="#">Apply</a>
+            </div>
+        </div>
+
+        <!-- Applications Section -->
+        <div class="applications">
+            <h2>Your Applications</h2>
+            <ul class="application-list">
+                <li class="application-item">
+                    <p>Web Designer at XYZ Corp</p>
+                    <p>Status: Pending</p>
+                </li>
+                <li class="application-item">
+                    <p>Content Writer at ABC Media</p>
+                    <p>Status: Interview Scheduled</p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Notifications Section -->
+        <div class="notifications">
+            <h2>Notifications</

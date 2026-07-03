@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Category Selection</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 1200px;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #777;
+      margin-bottom: 2rem;
+    }
+
+    .form-section {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .categories, .specialties {
+      width: 50%;
+    }
+
+    .categories h2, .specialties h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .category-list {
+      list-style: none;
+      border-right: 1px solid #ddd;
+      padding-right: 1rem;
+    }
+
+    .category-item {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .category-item:hover {
+      color: #007bff;
+    }
+
+    .specialty-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .specialty-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .specialty-item input {
+      margin-right: 10px;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+
+    .back-button, .next-button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .back-button {
+      background-color: #f8f9fa;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .next-button {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .next-button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      .form-section {
+        flex-direction: column;
+      }
+
+      .categories, .specialties {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Great, so what kind of work are you here to do?</h1>
+    <p>Don't worry, you can change these choices later on.</p>
+
+    <div class="form-section">
+      <!-- Categories Section -->
+      <div class="categories">
+        <h2>Select 1 category</h2>
+        <ul class="category-list">
+          <li class="category-item" data-category="Accounting">Accounting & Consulting</li>
+          <li class="category-item" data-category="Admin">Admin Support</li>
+          <li class="category-item" data-category="Customer Service">Customer Service</li>
+          <li class="category-item" data-category="Data Science">Data Science & Analytics</li>
+          <li class="category-item" data-category="Design">Design & Creative</li>
+          <li class="category-item" data-category="Engineering">Engineering & Architecture</li>
+          <li class="category-item" data-category="IT">IT & Networking</li>
+          <li class="category-item" data-category="Legal">Legal</li>
+          <li class="category-item" data-category="Marketing">Sales & Marketing</li>
+          <li class="category-item" data-category="Translation">Translation</li>
+          <li class="category-item" data-category="Web Development">Web, Mobile & Software Dev</li>
+          <li class="category-item" data-category="Writing">Writing</li>
+        </ul>
+      </div>
+
+      <!-- Specialties Section -->
+      <div class="specialties">
+        <h2>Now, select 1 to 3 specialties</h2>
+        <ul class="specialty-list" id="specialtyList">
+          <!-- Specialties will be dynamically inserted here -->
+        </ul>
+        <div class="error-message" id="errorMessage">You must select at least one service.</div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="back-button" onclick="goBack()">Back</button>
+      <button class="start-button" onclick="window.location.href='dashB.html'">Show Projects</button>
+    </div>
+  </div>
+
+  <script>
+    // Sample specialties for each category
+    const specialties = {
+      Accounting: ['Financial Analysis', 'Tax Preparation', 'Audit'],
+      Admin: ['Data Entry', 'Virtual Assistance', 'Email Management'],
+      'Customer Service': ['Phone Support', 'Helpdesk', 'Live Chat Support'],
+      'Data Science': ['Machine Learning', 'Data Mining', 'Data Visualization'],
+      Design: ['Graphic Design', 'Logo Design', 'Illustration'],
+      Engineering: ['Civil Engineering', 'Electrical Engineering', 'Mechanical Engineering'],
+      IT: ['Network Security', 'Cloud Computing', 'Technical Support'],
+      Legal: ['Contract Law', 'Corporate Law', 'Intellectual Property'],
+      Marketing: ['SEO', 'Social Media Marketing', 'Content Marketing'],
+      Translation: ['English to Spanish', 'French to English', 'German to English'],
+      'Web Development': ['Frontend Development', 'Backend Development', 'Full Stack'],
+      Writing: ['Content Writing', 'Copywriting', 'Editing']
+    };
+
+    const categoryItems = document.querySelectorAll('.category-item');
+    const specialtyList = document.getElementById('specialtyList');
+    const errorMessage = document.getElementById('errorMessage');
+    const nextButton = document.getElementById('nextButton');
+
+    let selectedCategory = null;
+    let selectedSpecialties = [];
+
+    // Handle category selection
+    categoryItems.forEach(item => {
+      item.addEventListener('click', () => {
+        categoryItems.forEach(i => i.style.color = '#333'); // Reset others
+        item.style.color = '#007bff'; // Highlight selected category
+        selectedCategory = item.getAttribute('data-category');
+        loadSpecialties(selectedCategory);
+      });
+    });
+
+    // Load specialties based on the selected category
+    function loadSpecialties(category) {
+      specialtyList.innerHTML = ''; // Clear the list
+      specialties[category].forEach(specialty => {
+        const li = document.createElement('li');
+        li.classList.add('specialty-item');
+        li.innerHTML = `<input type="checkbox" class="specialty-checkbox" value="${specialty}"> ${specialty}`;
+        li.querySelector('input').addEventListener('change', toggleSpecialty);
+        specialtyList.appendChild(li);
+      });
+      validateSelection();
+    }
+
+    // Handle specialty selection
+    function toggleSpecialty(event) {
+      const checkbox = event.target;
+      const specialty = checkbox.value;
+      
+      if (checkbox.checked) {
+        if (selectedSpecialties.length < 3) {
+          selectedSpecialties.push(specialty);
+        } else {
+          checkbox.checked = false; // Prevent selecting more than 3
+          alert('You can only select up to 3 specialties.');
+        }
+      } else {
+        selectedSpecialties = selectedSpecialties.filter(s => s !== specialty);
+      }
+      validateSelection();
+    }
+
+    // Validate if the user has selected at least 1 specialty
+    function validateSelection() {
+      if (selectedSpecialties.length >= 1) {
+        errorMessage.style.display = 'none';
+        nextButton.disabled = false;
+      } else {
+        errorMessage.style.display = 'block';
+        nextButton.disabled = true;
+      }
+    }
+
+    // Back button handler (you can replace with actual navigation)
+    function goBack() {
+      alert('Going back...');
+    }
+  </script>
+
+</body>
+</html>

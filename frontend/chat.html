@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKILLCONNECTO</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #110e42;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            height: 100%;
+        }
+
+        .contacts {
+            width: 30%;
+            border-right: 1px solid #ddd;
+            background-color: #ffffff;
+            overflow-y: auto;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-list {
+            padding: 1rem;
+        }
+
+        .contact {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .contact:hover {
+            background-color: #f0f2f5;
+        }
+
+        .contact-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        .contact-name {
+            font-weight: bold;
+        }
+
+        .contact-status {
+            color: #6c757d;
+        }
+
+        .chat-box {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            max-width: 70%;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background-color: rgb(164, 165, 191);
+            color: white;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background-color: #e9ecef;
+        }
+
+        .message:before {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .message.sent:before {
+            right: -10px;
+            top: 50%;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent #007bff;
+            transform: translateY(-50%);
+        }
+
+        .message.received:before {
+            left: -10px;
+            top: 50%;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent #e9ecef;
+            transform: translateY(-50%);
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-timestamp {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-left: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-top: 1px solid #ddd;
+            background-color: #f8f9fa;
+        }
+
+        .chat-input textarea {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            resize: none;
+            margin-right: 1rem;
+        }
+
+        .chat-input button {
+            background-color: #110e42;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chat-input button:hover {
+            background-color: #0056b3;
+        }
+
+        .chat-input .file-input {
+            display: none;
+        }
+
+        .chat-input .file-label {
+            background-color: #e9ecef;
+            color: #007bff;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+
+        .chat-input .emoji-picker {
+            font-size: 1.25rem;
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 1rem;
+            border-top: 1px solid #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .contacts {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .chat-container {
+                width: 100%;
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SKILLCONNECTO</h1>
+    </header>
+
+    <div class="container">
+        <!-- Contacts Section -->
+        <div class="contacts">
+            <div class="contact-list">
+                <div class="contact" onclick="selectContact('Jane Doe')">
+                    <img src="https://via.placeholder.com/40" alt="Avatar" class="contact-avatar">
+                    <div>
+                        <div class="contact-name">Jane Doe</div>
+                        <div class="contact-status">Online</div>
+                    </div>
+                </div>
+                <div class="contact" onclick="selectContact('John Smith')">
+                    <img src="https://via.placeholder.com/40" alt="Avatar" class="contact-avatar">
+                    <div>
+                        <div class="contact-name">John Smith</div>
+                        <div class="contact-status">Offline</div>
+                    </div>
+                </div>
+                <!-- More contacts can be added here -->
+            </div>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat-container">
+            <div class="chat-box" id="chat-box">
+                <!-- Messages will be dynamically added here -->
+            </div>
+
+            <div class="chat-input">
+                <label for="file-input" class="file-label">
+                    <i class="fas fa-paperclip"></i> Attach
+                </label>
+                <input type="file" id="file-input" class="file-input">
+                <span class="emoji-picker">
+                    <i class="fas fa-smile"></i>
+                </span>
+                <textarea id="message-input" rows="3" placeholder="Type your message..."></textarea>
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy;SKILLCONNECTO 2024. All rights reserved.
+    </footer>
+
+    <script>
+        // Function to scroll to the bottom of the chatbox
+        function scrollToBottom() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Function to send a new message
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const messageText = messageInput.value.trim();
+            if (messageText) {
+                // Create a new message element
+                const newMessage = document.createElement('div');
+                newMessage.className = 'message sent';
+                newMessage.innerHTML = `
+                    <div>
+                        <div class="message-header">
+                            <strong>You</strong>
+                            <span class="message-timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
+                        </div>
+                        ${messageText}
+                    </div>
+                `;
+
+                // Append the new message to the chat box
+                const chatBox = document.getElementById('chat-box');
+                chatBox.appendChild(newMessage);
+
+                // Clear the message input
+                messageInput.value = '';
+
+                // Scroll to the bottom
+                scrollToBottom();
+            }
+        }
+
+        // Function to select a contact and display chat
+        function selectContact(name) {
+            // Update chat box with mock conversation
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML = `
+                <div class="message received">
+                    <img src="https://via.placeholder.com/40" alt="Avatar" class="message-avatar">
+                    <div>
+                        <div class="message-header">
+                            <strong>${name}</strong>
+                            <span class="message-timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
+                        </div>
+                        HI!
+                    </div>
+                </div>
+            `;
+            scrollToBottom();
+        }
+
+        // Add event listener to the send button
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+
+        // Optional: Allow sending message with Enter key
+        document.getElementById('message-input').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Initial scroll to the bottom
+        scrollToBottom();
+    </script>
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal Acceptance Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+
+        header nav a:hover {
+            color: #f0f0f0;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .proposal-details {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .proposal-details:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.02);
+        }
+
+        .proposal-details h2 {
+            margin-top: 0;
+        }
+
+        .freelancer-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+            transition: transform 0.3s;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.1);
+        }
+
+        .client-actions button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .client-actions button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .additional-info {
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .additional-info ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .additional-info li {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #f0f0f0;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            width: 80%;
+            max-width: 900px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+        }
+
+        .close-btn {
+            background: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .close-btn:hover {
+            background: #cc0000;
+        }
+
+        /* Payment History Table */
+        .payment-history {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            animation: fadeIn 0.5s;
+        }
+
+        .payment-history th, .payment-history td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .payment-history th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .payment-history tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .payment-history tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Invoice Button */
+        .invoice-btn {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 20px;
+            display: block;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .invoice-btn:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        /* Payment Milestone Progress */
+        .milestone {
+            margin-top: 20px;
+        }
+
+        .milestone-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .milestone-bar {
+            background-color: #007bff;
+            height: 20px;
+            border-radius: 10px;
+            width: 0; /* Adjust width dynamically */
+            transition: width 1s ease-in-out;
+        }
+
+        .milestone-progress {
+            color: #fff;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        /* Payment Methods Management */
+        .payment-methods {
+            margin-top: 20px;
+        }
+
+        .payment-methods table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .payment-methods th, .payment-methods td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .payment-methods th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .payment-methods tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .payment-methods tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Notifications */
+        .notifications {
+            margin-top: 20px;
+        }
+
+        .notification {
+            background-color: #e7f0ff;
+            border-left: 5px solid #007bff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            animation: slideIn 0.5s;
+        }
+
+        /* Charts */
+        .chart-container {
+            margin-top: 20px;
+        }
+
+        .chart {
+            width: 100%;
+            height: 300px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>MyPlatform</h1>
+            <nav>
+                <a href="#">Dashboard</a>
+                <a href="#">Messages</a>
+                <a href="#">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="proposal-details">
+                <h2>Proposal Accepted</h2>
+                <div class="freelancer-info">
+                    <img src="freelancer-profile.jpg" alt="Freelancer Profile Picture" class="profile-pic">
+                    <h3>John Doe</h3>
+                </div>
+                <div class="proposal-info">
+                    <p><strong>Project Title:</strong> Web Design for E-commerce</p>
+                    <p><strong>Proposal Summary:</strong> A detailed proposal outlining the design and functionality of the e-commerce site.</p>
+                    <p><strong>Accepted Date:</strong> September 14, 2024</p>
+                    <p><strong>Budget:</strong> $2000</p>
+                    <p><strong>Timeline:</strong> 4 weeks</p>
+                </div>
+                <div class="client-actions">
+                    <button onclick="openModal('contactModal')">Contact Freelancer</button>
+                    <button onclick="openModal('contractModal')">View Contract</button>
+                    <button onclick="openModal('paymentModal')">Payment Details</button>
+                </div>
+            </section>
+
+            <section class="additional-info">
+                <h3>Attachments</h3>
+                <ul>
+                    <li><a href="proposal-file.pdf" download>Proposal Document</a></li>
+                </ul>
+                <h3>Comments/Notes</h3>
+                <p>No additional comments.</p>
+            </section>
+
+            <!-- Payment Dashboard -->
+            <section class="chart-container">
+                <h3>Payment Dashboard</h3>
+                <canvas id="paymentChart" class="chart"></canvas>
+            </section>
+
+            <!-- Payment Methods Management -->
+            <section class="payment-methods">
+                <h3>Payment Methods</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Details</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Credit Card</td>
+                            <td>**** **** **** 1234</td>
+                            <td>
+                                <button onclick="editPaymentMethod()">Edit</button>
+                                <button onclick="deletePaymentMethod()">Delete</button>
+                            </td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Notifications -->
+            <section class="notifications">
+                <h3>Recent Notifications</h3>
+                <div class="notification">
+                    <p><strong>Payment Received:</strong> $500 payment received for milestone 1.</p>
+                </div>
+                <div class="notification">
+                    <p><strong>Upcoming Milestone:</strong> Payment of $1000 due in 3 days.</p>
+                </div>
+                <!-- Add more notifications as needed -->
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 MyPlatform. All rights reserved.</p>
+            <a href="#">Contact Support</a> | <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Contact Freelancer</h3>
+                <button class="close-btn" onclick="closeModal('contactModal')">&times;</button>
+            </div>
+            <p>Contact details or form would go here.</p>
+        </div>
+    </div>
+
+    <div id="contractModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>View Contract</h3>
+                <button class="close-btn" onclick="closeModal('contractModal')">&times;</button>
+            </div>
+            <div>
+                <h4>Contract Terms</h4>
+                <p><strong>Contract ID:</strong> 123456</p>
+                <p><strong>Effective Date:</strong> September 14, 2024</p>
+                <p><strong>Duration:</strong> 4 weeks</p>
+                <p><strong>Terms:</strong> The freelancer agrees to deliver the project as specified in the proposal.</p>
+                <p><strong>Status:</strong> Active</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Payment Details</h3>
+                <button class="close-btn" onclick="closeModal('paymentModal')">&times;</button>
+            </div>
+            <h4>Payment History</h4>
+            <table class="payment-history">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>September 1, 2024</td>
+                        <td>$500</td>
+                        <td>Completed</td>
+                    </tr>
+                    <tr>
+                        <td>September 8, 2024</td>
+                        <td>$1000</td>
+                        <td>Completed</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+            <button class="invoice-btn" onclick="generateInvoice()">Generate Invoice</button>
+            <div class="milestone">
+                <div class="milestone-title">Payment Milestone Progress</div>
+                <div class="milestone-bar" id="milestoneBar">
+                    <div class="milestone-progress">60%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js for Payment Dashboard -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            if (modalId === 'paymentModal') {
+                document.getElementById('milestoneBar').style.width = '60%';
+                updateChart(); // Update the chart when the modal is opened
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function generateInvoice() {
+            alert("Invoice generated! (This would be implemented with actual functionality)");
+            // Implement invoice generation logic here
+        }
+
+        function editPaymentMethod() {
+            alert("Edit Payment Method functionality would be implemented here.");
+            // Implement edit functionality here
+        }
+
+        function deletePaymentMethod() {
+            alert("Delete Payment Method functionality would be implemented here.");
+            // Implement delete functionality here
+        }
+
+        function updateChart() {
+            var ctx = document.getElementById('paymentChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Payments',
+                        data: [500, 700, 800, 1000],
+                        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                        borderColor: 'rgba(0, 123, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `Amount: $${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initial chart setup
+        updateChart();
+    </script>
+</body>
+</html>

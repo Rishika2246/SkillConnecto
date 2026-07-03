@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up / Log In</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 400px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group input:focus {
+            border-color: #2a9d8f;
+            outline: none;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            background-color: #21867a;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            color: #21867a;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Media Query for smaller devices */
+        @media (max-width: 500px) {
+            .container {
+                width: 100%;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Container for Sign Up / Log In forms -->
+    <div class="container">
+        <!-- Sign Up Form -->
+        <div id="signupForm">
+            <h2>Sign Up as a Freelancer</h2>
+            <div class="form-group">
+                <label for="signupName">Username</label>
+                <input type="text" id="signupName" placeholder="Enter your username">
+                <div class="error" id="signupNameError">Please enter your username</div>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" placeholder="Enter a password">
+                <div class="error" id="signupPasswordError">Password must be at least 6 characters</div>
+            </div>
+            <button class="submit-btn" onclick="registerUser()">Sign Up</button>
+            <div class="toggle-link" onclick="toggleForms()">Already have an account? Log In</div>
+        </div>
+
+        <!-- Log In Form -->
+        <div id="loginForm" style="display: none;">
+            <h2>Log In as a Freelancer</h2>
+            <div class="form-group">
+                <label for="loginEmail">Username</label>
+                <input type="text" id="loginEmail" placeholder="Enter your username">
+                <div class="error" id="loginEmailError">Please enter your username</div>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password">
+                <div class="error" id="loginPasswordError">Please enter your password</div>
+            </div>
+            <button class="submit-btn" onclick="validateLogin()">Log In</button>
+            <div class="toggle-link" onclick="toggleForms()">Don't have an account? Sign Up</div>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle between Sign Up and Log In forms
+        function toggleForms() {
+            let signupForm = document.getElementById('signupForm');
+            let loginForm = document.getElementById('loginForm');
+
+            if (signupForm.style.display === "none") {
+                signupForm.style.display = "block";
+                loginForm.style.display = "none";
+            } else {
+                signupForm.style.display = "none";
+                loginForm.style.display = "block";
+            }
+        }
+
+        // Register User Function
+        async function registerUser() {
+            let username = document.getElementById('signupName').value;
+            let password = document.getElementById('signupPassword').value;
+
+            let nameError = document.getElementById('signupNameError');
+            let passwordError = document.getElementById('signupPasswordError');
+
+            let isValid = true;
+
+            // Validate Username
+            if (username === "") {
+                nameError.style.display = "block";
+                isValid = false;
+            } else {
+                nameError.style.display = "none";
+            }
+
+            // Validate Password
+            if (password.length < 6) {
+                passwordError.style.display = "block";
+                isValid = false;
+            } else {
+                passwordError.style.display = "none";
+            }
+
+            if (isValid) {
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+
+                try {
+                    const response = await fetch('http://localhost:8000/register', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        const data = await response.json();
+                        alert(data.detail || 'Registration failed');
+                    } else {
+                        alert('Registration successful');
+                        window.location.href = "congF.html"; // Redirect after success
+                    }
+                } catch (error) {
+                    console.error('Error during registration:', error);
+                    alert('Registration failed');
+                }
+            }
+        }
+
+        // Email Validation for Login (if needed)
+        function validateEmail(email) {
+            let re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            return re.test(email);
+        }
+        async function validateLogin() {
+            let username = document.getElementById('loginEmail').value;
+            let password = document.getElementById('loginPassword').value;
+
+            let emailError = document.getElementById('loginEmailError');
+            let passwordError = document.getElementById('loginPasswordError');
+
+            let isValid = true;
+
+            // Validate username field
+            if (username === "") {
+                emailError.style.display = "block";
+                isValid = false;
+            } else {
+                emailError.style.display = "none";
+            }
+
+            // Validate password field
+            if (password === "") {
+                passwordError.style.display = "block";
+                isValid = false;
+            } else {
+                passwordError.style.display = "none";
+            }
+
+            // If form is valid, make the POST request to /token
+            if (isValid) {
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+
+                try {
+                    const response = await fetch('http://localhost:8000/token', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        alert(data.detail || 'Login failed');
+                    } else {
+                        alert('Login successful');
+                        // Save the token in localStorage for future authenticated requests
+                        localStorage.setItem('access_token', data.access_token);
+                        window.location.href = "dashboard.html"; // Redirect after successful login
+                    }
+                } catch (error) {
+                    console.error('Error during login:', error);
+                    alert('Login failed');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

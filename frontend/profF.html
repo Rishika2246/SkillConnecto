@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        header {
+            background-color: #110e42;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        header nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        header nav a:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            background: rgb(164, 165, 191);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .profile-header img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .profile-header img:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .profile-header p {
+            margin-top: 0.5rem;
+        }
+
+        .edit-button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            color: white;
+            background-color: #110e42;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .edit-button:hover {
+            background-color: #4543a8;
+            transform: scale(1.05);
+        }
+
+        /* Sections */
+        .section {
+            background: rgb(164, 165, 191);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            animation: slideIn 0.7s ease-out;
+        }
+
+        .section h2 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .skills-list, .experience-list, .portfolio-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .skills-list li, .experience-list li, .portfolio-list li {
+            background: rgb(164, 165, 191);
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .skills-list li:hover, .experience-list li:hover, .portfolio-list li:hover {
+            transform: scale(1.05);
+            background-color: rgb(164, 165, 191);
+        }
+
+        .ratings {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ratings .rating {
+            background: #ffc107;
+            color: rgb(164, 165, 191);
+            border-radius: 5px;
+            padding: 0.5rem;
+        }
+
+        .contact-form {
+            background: rgb(164, 165, 191);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            animation: slideIn 0.7s ease-out;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: #007bff;
+        }
+
+        .contact-form button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #110e42;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .contact-form button:hover {
+            background-color: #6082a5;
+            transform: scale(1.05);
+        }
+
+        /* Additional Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .achievement-card {
+            background: rgb(164, 165, 191);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: bounceIn 1s ease-out;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#profile">Profile</a>
+            <a href="#messages">Messages</a>
+            <a href="#logout">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <img src="profile-pic.jpg" alt="Profile Picture">
+            <div>
+                <h1>John Doe</h1>
+                <p>Freelance Web Developer</p>
+                <button class="edit-button">Edit Profile</button>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section">
+            <h2>Skills</h2>
+            <ul class="skills-list">
+                <li>JavaScript</li>
+                <li>React</li>
+                <li>Node.js</li>
+                <li>CSS</li>
+            </ul>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="section">
+            <h2>Experience</h2>
+            <ul class="experience-list">
+                <li>Frontend Developer at Tech Corp</li>
+                <li>Backend Developer at Web Solutions</li>
+                <li>Full Stack Developer at Dev Studio</li>
+            </ul>
+        </div>
+
+        <!-- Portfolio Section -->
+        <div class="section">
+            <h2>Portfolio</h2>
+            <ul class="portfolio-list">
+                <li><a href="#" target="_blank">Project 1</a></li>
+                <li><a href="#" target="_blank">Project 2</a></li>
+                <li><a href="#" target="_blank">Project 3</a></li>
+            </ul>
+        </div>
+
+        <!-- Ratings Section -->
+        <div class="section">
+            <h2>Ratings and Reviews</h2>
+            <div class="ratings">
+                <div class="rating">4.5</div>
+                <p>Based on 20 reviews</p>
+            </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="achievement-card">
+            <h2>Achievements</h2>
+            <p>Recipient of the "Best Freelancer Award 2023" for exceptional performance in web development projects.</p>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <h2>Contact</h2>
+            <form>
+                <label for="contactName">Name</label>
+                <input type="text" id="contactName" name="contactName" required>
+
+                <label for="contactEmail">Email</label>
+                <input type="email" id="contactEmail" name="contactEmail" required>
+
+                <label for="contactMessage">Message</label>
+                <textarea id="contactMessage" name="contactMessage" rows="5" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for Animations -->
+    <script>
+        // No additional JavaScript required for this example, but can be added for further interactivity.
+    </script>
+</body>
+</html>

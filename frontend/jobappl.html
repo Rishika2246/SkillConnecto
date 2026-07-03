@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Acceptance Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: rgb(164, 165, 191);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .proposal-info {
+            margin-bottom: 20px;
+        }
+
+        .proposal-info p {
+            margin: 5px 0;
+        }
+
+        .actions button {
+            background-color: #110e42;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .actions button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .actions button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Review Proposal</h1>
+        <div class="proposal-info">
+            <p><strong>Freelancer:</strong> John Doe</p>
+            <p><strong>Project Requirements:</strong> Web Design for E-commerce</p>
+            <p><strong>Proposal Summary:</strong> A comprehensive design and development plan for an e-commerce site.</p>
+            <p><strong>Budget:</strong> 20,000</p>
+            <p><strong>Timeline:</strong> 4 weeks</p>
+        </div>
+        <div class="actions">
+            <button onclick="window.location.href='proposal.html'">Accept Proposal</button>
+            <button onclick="window.location.href='dashB.html'">Reject Proposal</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('acceptButton').addEventListener('click', function() {
+            // Redirect to the proposal dealing page
+            window.location.href = 'proposal.html';
+        });
+
+        document.getElementById('rejectButton').addEventListener('click', function() {
+            alert('Proposal rejected. You will be redirected to the home page.');
+            // Redirect to the home page or another relevant page
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

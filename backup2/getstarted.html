@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join as Client or Freelancer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            text-align: center;
+        }
+        .title {
+            font-size: 34px;
+            margin-bottom: 50px;
+        }
+        .options {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .option {
+            border: 4px solid #065853;
+            padding: 25px;
+            width: 280px;
+            margin: 0 10px;
+            border-radius: 8px;
+            background-color: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        .option:hover {
+            border-color: #2a9d8f;
+        }
+        .option input {
+            margin-right: 10px;
+        }
+        .create-account {
+            display: block;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background-color: #ccc;
+            text-align: center;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .cont{
+            display:flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-link {
+            margin-top: 50px;
+        }
+        .login-link a {
+            color: #07a4a4;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Join as a client or freelancer</div>
+        <div class="options">
+            <section class="hero">
+                <button onclick="window.location.href='loginC.html'">I'm a client hiring for a project</button>
+                <button onclick="window.location.href='loginF.html'">I'm a freelancer looking for work</button>
+            </section>
+        </div>
+        <div class="cont">
+        <button class="create-account" disabled>Create Account</button>
+        </div>
+        <div class="login-link">
+            Already have an account? <a href="#">Log In</a>
+        </div>
+    </div>
+    <script src="https://cdn.botpress.cloud/webchat/v2.1/inject.js"></script>
+    <script src="https://mediafiles.botpress.cloud/4c94179c-c3db-4a3d-bb7d-af51d0846a3c/webchat/v2.1/config.js"></script>
+ 
+
+</body>
+</html>

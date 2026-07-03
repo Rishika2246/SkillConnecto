@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Created</title>
+    <style>
+        /* Global body styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            animation: fadeInBody 1.5s ease-in-out;
+        }
+
+        /* Fade-in animation for the body */
+        @keyframes fadeInBody {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Container styling */
+        .container {
+            text-align: center;
+            animation: slideIn 1s ease-out;
+        }
+
+        /* Slide-in animation for the container */
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Icon styling */
+        .icon {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            transition: transform 0.4s ease;
+        }
+
+        /* Icon hover effect */
+        .icon:hover {
+            transform: scale(1.1); /* Slightly increase the size */
+        }
+
+        /* Text styling */
+        h1 {
+            font-size: 24px;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        /* Text hover effect */
+        h1:hover {
+            color: #2d9f2d; /* Change color on hover */
+        }
+
+        /* Optional CAPTCHA section */
+        .captcha {
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeInCaptcha 2s ease 1s forwards;
+        }
+
+        /* Fade-in animation for CAPTCHA */
+        @keyframes fadeInCaptcha {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Button Styling */
+        .start-button {
+            display: inline-block;
+            padding: 15px 30px;
+            margin-top: 30px;
+            font-size: 18px;
+            background-color: #2d9f2d;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            transform: translateY(50px);
+            animation: buttonSlideIn 1.5s ease-out forwards 1s;
+        }
+
+        /* Button animation on page load */
+        @keyframes buttonSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Button hover effect */
+        .start-button:hover {
+            background-color: #25a825;
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Icon Section -->
+        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Success Icon" class="icon">
+        
+        <!-- Text Section -->
+        <h1>Congratulations, your account has been created. Let's get you started!</h1>
+        
+        <!-- Start Button -->
+        <button class="start-button" onclick="window.location.href='resume.html'">Continue</button>
+ 
+
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Work Experience</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #333 ; /* Light beige background color for the whole page */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #e9e2dc; /* Light beige background color for the form container */
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #fff; /* Light beige background color for input fields */
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .date-select {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .date-select select {
+            width: 50%;
+            background-color: #fff; /* Light beige background color for select fields */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background-color: #cef2f8;
+            color: black;
+        }
+
+        .save-btn {
+            background-color: #6ec6e9;
+            color: rgb(9, 9, 9);
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Add Work Experience</h1>
+
+        <label for="title">Title *</label>
+        <input type="text" id="title" name="title" placeholder="Ex: Software Engineer" required>
+
+        <label for="company">Company *</label>
+        <input type="text" id="company" name="company" placeholder="Ex: Microsoft" required>
+
+        <label for="location">Location</label>
+        <div style="display: flex; gap: 10px;">
+            <input type="text" id="location" name="location" placeholder="Ex: London">
+            <select id="country" name="country">
+                <option value="">Country</option>
+                <option value="us">United States</option>
+                <option value="uk">United Kingdom</option>
+                <option value="ca">Canada</option>
+                <!-- Add more countries as needed -->
+            </select>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <input type="checkbox" id="currently-working" name="currently-working">
+            <label for="currently-working">I am currently working in this role</label>
+        </div>
+
+        <div class="date-select">
+            <div>
+                <label for="start-date">Start Date *</label>
+                <div style="display: flex; gap: 20px;">
+                    <select id="start-month" name="start-month" required>
+                        <option value="">Month</option>
+                        <option value="jan">January</option>
+                        <option value="feb">February</option>
+                        <option value="mar">March</option>
+                        <option value="apr">April</option>
+                        <option value="may">May</option>
+                        <option value="jun">June</option>
+                        <option value="jul">July</option>
+                        <option value="aug">August</option>
+                        <option value="sep">September</option>
+                        <option value="oct">October</option>
+                        <option value="nov">November</option>
+                        <option value="dec">December</option>
+                    </select>
+                    <select id="start-year" name="start-year" required>
+                        <!-- Years will be populated by JS -->
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label for="end-date">End Date *</label>
+                <div style="display: flex; gap: 10px;">
+                    <select id="end-month" name="end-month" required>
+                        <option value="">Month</option>
+                        <option value="jan">January</option>
+                        <option value="feb">February</option>
+                        <option value="mar">March</option>
+                        <option value="apr">April</option>
+                        <option value="may">May</option>
+                        <option value="jun">June</option>
+                        <option value="jul">July</option>
+                        <option value="aug">August</option>
+                        <option value="sep">September</option>
+                        <option value="oct">October</option>
+                        <option value="nov">November</option>
+                        <option value="dec">December</option>
+                    </select>
+                    <select id="end-year" name="end-year" required>
+                        <!-- Years will be populated by JS -->
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="5" placeholder="Describe your work experience"></textarea>
+
+        <div class="button-container">
+            <button type="button" class="cancel-btn">Cancel</button>
+            <button type="submit" class="save-btn">Save</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to dynamically add years from 1980 to the current year
+        const currentYear = new Date().getFullYear();
+        const earliestYear = 1980;
+
+        const startYearSelect = document.getElementById('start-year');
+        const endYearSelect = document.getElementById('end-year');
+
+        // Function to populate years
+        function populateYears(selectElement) {
+            for (let year = currentYear; year >= earliestYear; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                selectElement.appendChild(option);
+            }
+        }
+
+        // Populate both start and end year dropdowns
+        populateYears(startYearSelect);
+        populateYears(endYearSelect);
+    </script>
+
+</body>
+</html>

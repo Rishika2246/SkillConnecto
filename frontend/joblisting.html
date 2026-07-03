@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Job Listings</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: #110e42;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+        }
+
+        .search-bar input, .search-bar select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            transition: border-color 0.3s;
+        }
+
+        .search-bar input:focus, .search-bar select:focus {
+            border-color: #110e42;
+        }
+
+        .search-bar button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #110e42;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #799dc3;
+        }
+
+        /* Job Filters */
+        .job-filters {
+            display:flex;
+            flex-wrap:flex;
+            flex-direction:column;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .job-filters label {
+            font-weight: bold;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .job-filters select, .job-filters input[type="range"] {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 1rem;
+        }
+
+        .job-filters select:focus, .job-filters input[type="range"]:focus {
+            border-color: #007bff;
+        }
+
+        .salary-slider {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .salary-slider label {
+            margin-bottom: 0.5rem;
+        }
+
+        .job-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            width: 100%;
+            max-width: 1200px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .job {
+            background: white;
+            border: 5px solid #110e42;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .job:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background-color: #f8f9fa;
+        }
+
+        .job h3 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .job p {
+            margin: 0.5rem 0;
+        }
+
+        .job .details {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+        }
+
+        .job .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            color: white;
+            background-color: #110e42;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .job .btn:hover {
+            background-color: #4c5fd5;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        .pagination a, .pagination button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .pagination a:hover, .pagination button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Job Details Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #007bff;
+        }
+
+        .modal-header h2 {
+            margin-bottom: 1rem;
+        }
+
+        .modal-body {
+            margin-bottom: 1rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .search-bar, .job-filters {
+                flex-direction: column;
+            }
+
+            .search-bar input, .search-bar select, .job-filters select, .job-filters input[type="range"] {
+                max-width: none;
+                width: 100%;
+            }
+
+            .job-list {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        #remote{
+            width:10rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="dashB.html">Home</a>
+            <a href="#jobs">Job Listings</a>
+            <a href="#profile">Profile</a>
+            <a href="#login" onclick="openLoginModal()">Login</a>
+        </nav>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Job Filters -->
+        <div class="job-filters">
+            <label for="experienceLevel">Experience Level</label>
+            <select id="experienceLevel">
+                <option value="">All Levels</option>
+                <option value="entry">Entry-Level</option>
+                <option value="mid">Mid-Level</option>
+                <option value="senior">Senior-Level</option>
+            </select>
+
+            <label for="jobType">Job Type</label>
+            <select id="jobType">
+                <option value="">All Types</option>
+                <option value="full-time">Full-Time</option>
+                <option value="part-time">Part-Time</option>
+                <option value="contract">Contract</option>
+                <option value="internship">Internship</option>
+            </select>
+
+            <label for="category">Category</label>
+            <select id="category">
+                <option value="">All Categories</option>
+                <!-- Add category options here -->
+                <option value="technology">Technology</option>
+                <option value="marketing">Marketing</option>
+                <option value="finance">Finance</option>
+                <option value="healthcare">Healthcare</option>
+            </select>
+
+            <label for="companySize">Company Size</label>
+            <select id="companySize">
+                <option value="">Any Size</option>
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
+
+            <label for="industry">Industry</label>
+            <select id="industry">
+                <option value="">All Industries</option>
+                <!-- Add industry options here -->
+                <option value="software">Software</option>
+                <option value="e-commerce">E-commerce</option>
+                <option value="biotech">Biotech</option>
+                <option value="finance">Finance</option>
+            </select>
+
+            <label for="remote">Remote Only</label>
+            <input type="checkbox" id="remote">
+
+            <div class="salary-slider">
+                <label for="salaryRange">Salary Range</label>
+                <input type="range" id="salaryRange" min="0" max="150000" step="5000" value="0">
+                <output id="salaryOutput">0</output>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for jobs...">
+            <select id="locationFilter">
+                <option value="">Location</option>
+                <!-- Add location options here -->
+                <option value="new-york">New York</option>
+                <option value="san-francisco">San Francisco</option>
+                <option value="los-angeles">Los Angeles</option>
+                <option value="india">India</option>
+                <option value="remote">Remote</option>
+            </select>
+            <button onclick="searchJobs()">Search</button>
+        </div>
+
+        <!-- Job Listings -->
+        <div class="job-list" id="jobList">
+            <!-- Example Job Entry -->
+            <div class="job" data-title="Software Engineer" data-company="Tech Corp" data-location="San Francisco, CA" data-description="Develop and maintain software applications." data-salary="100000">
+                <h3>Software Engineer</h3>
+                <p><strong>Company:</strong> Tech Corp</p>
+                <p><strong>Location:</strong> San Francisco, CA</p>
+                <p><strong>Salary:</strong> 80,000 - 120,000</p>
+                <div class="details">
+                    <a href="#" class="btn">View Details</a>
+                </div>
+            </div>
+            <!-- Add more job entries here -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button id="prevPage" onclick="changePage(-1)">Previous</button>
+            <button id="nextPage" onclick="changePage(1)">Next</button>
+        </div>
+    </div>
+
+    <!-- Job Details Modal -->
+    <div id="jobModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeJobModal()">&times;</span>
+            <div class="modal-header">
+                <h2 id="jobTitle">Job Title</h2>
+                <p><strong>Company:</strong> <span id="companyName">Company Name</span></p>
+                <p><strong>Location:</strong> <span id="jobLocation">Location</span></p>
+            </div>
+            <div class="modal-body">
+                <p id="jobDescription">Job Description</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn">Apply Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeLoginModal()">&times;</span>
+            <h2>Login</h2>
+            <form>
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" name="loginEmail" required>
+
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" name="loginPassword" required>
+
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for Modal, Filter, and Search Functionality -->
+    <script>
+        // Slider Output
+        document.getElementById('salaryRange').addEventListener('input', function() {
+            document.getElementById('salaryOutput').textContent = {thisvalue};
+        });
+
+        // Open Job Modal
+        function openJobModal(title, company, location, description) {
+            document.getElementById('jobTitle').textContent = title;
+            document.getElementById('companyName').textContent = company;
+            document.getElementById('jobLocation').textContent = location;
+            document.getElementById('jobDescription').textContent = description;
+            document.getElementById('jobModal').style.display = 'flex';
+        }
+
+        // Close Job Modal
+        function closeJobModal() {
+            document.getElementById('jobModal').style.display = 'none';
+        }
+
+        // Open Login Modal
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        // Close Login Modal
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        // Search Jobs
+        function searchJobs() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const experienceLevel = document.getElementById('experienceLevel').value;
+            const jobType = document.getElementById('jobType').value;
+            const category = document.getElementById('category').value;
+            const companySize = document.getElementById('companySize').value;
+            const industry = document.getElementById('industry').value;
+            const remote = document.getElementById('remote').checked;
+            const salaryRange = document.getElementById('salaryRange').value;
+            const locationFilter = document.getElementById('locationFilter').value;
+
+            const jobs = document.querySelectorAll('.job');
+            jobs.forEach(job => {
+                const title = job.dataset.title.toLowerCase();
+                const company = job.dataset.company.toLowerCase();
+                const location = job.dataset.location.toLowerCase();
+                const description = job.dataset.description.toLowerCase();
+                const salary = parseInt(job.dataset.salary, 10);
+
+                let show = true;
+
+                if (searchInput && !(title.includes(searchInput) || company.includes(searchInput) || description.includes(searchInput))) {
+                    show = false;
+                }
+                if (experienceLevel && !job.dataset.experienceLevel.includes(experienceLevel)) {
+                    show = false;
+                }
+                if (jobType && !job.dataset.jobType.includes(jobType)) {
+                    show = false;
+                }
+                if (category && !job.dataset.category.includes(category)) {
+                    show = false;
+                }
+                if (companySize && !job.dataset.companySize.includes(companySize)) {
+                    show = false;
+                }
+                if (industry && !job.dataset.industry.includes(industry)) {
+                    show = false;
+                }
+                if (remote && !job.dataset.remote) {
+                    show = false;
+                }
+                if (locationFilter && location !== locationFilter.toLowerCase()) {
+                    show = false;
+                }
+                if (salaryRange && salary > parseInt(salaryRange, 10)) {
+                    show = false;
+                }
+
+                job.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        // Pagination Functionality
+        let currentPage = 1;
+        const jobsPerPage = 10;
+
+        function showPage(page) {
+            const jobs = document.querySelectorAll('.job');
+            const totalPages = Math.ceil(jobs.length / jobsPerPage);
+
+            if (page < 1 || page > totalPages) return;
+
+            currentPage = page;
+            jobs.forEach((job, index) => {
+                job.style.display = (index >= (page - 1) * jobsPerPage && index < page * jobsPerPage) ? 'block' : 'none';
+            });
+        }
+
+        function changePage(direction) {
+            showPage(currentPage + direction);
+        }
+
+        // Initialize Pagination
+        showPage(currentPage);
+    </script>
+</body>
+</html>

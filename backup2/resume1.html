@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile - Step 1</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .progress-header {
+            margin-top: 30px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .progress-header span {
+            margin-left: 5px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button {
+            display: block;
+            width: 300px;
+            padding: 15px;
+            font-size: 16px;
+            color: #2d9f2d;
+            border: 2px solid #2d9f2d;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px auto;
+            text-decoration: none;
+            font-family: sans-serif;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #e9fbe9;
+        }
+
+        .button img {
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .icon-linkedin, .icon-resume, .icon-manual {
+            width: 20px;
+            height: 20px;
+        }
+
+        .time-estimate {
+            color: #666;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .time-estimate span {
+            font-size: 14px;
+        }
+
+        .time-estimate img {
+            width: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Main Title -->
+    <h1 class="title">How would you like to tell us about yourself?</h1>
+
+    <!-- Subtitle -->
+    <p class="subtitle">We need to get a sense of your education, experience and skills. It's quickest to import your information — you can edit it before your profile goes live.</p>
+
+    <!-- Buttons -->
+    <div class="button-container">
+        <a href="#" class="button" onclick="importFromLinkedIn()">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn Icon" class="icon-linkedin">
+            Import from LinkedIn
+        </a>
+        <a href="ufile.html" class="button">
+            <img src="https://cdn-icons-png.flaticon.com/512/724/724715.png" alt="Upload Icon" class="icon-resume">
+            Upload your resume
+        </a>
+        <a href="#" class="button" onclick="fillManually()">
+            Fill out manually (15 min)
+        </a>
+    </div>
+
+    <script>
+        
+    function importFromLinkedIn() {
+        const clientId = '86821sp10woknr'; // Replace with your LinkedIn app's client_id
+        const redirectUri = encodeURIComponent("http://localhost:8000/linkedin/callback"); // Replace with your actual redirect URI
+        const scope = encodeURIComponent('r_liteprofile r_emailaddress'); // Request permissions
+        const state = 'random_string_to_prevent_csrf'; // Generate a random state to prevent CSRF attacks
+
+        // Construct the LinkedIn authorization URL
+        const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
+
+        // Redirect the user to LinkedIn's authorization page
+        window.location.href = authUrl;
+    }
+
+
+        // // Placeholder function for LinkedIn OAuth integration
+        // function importFromLinkedIn() {
+        //     alert("Redirecting to LinkedIn for import...");
+        //     // Replace the below URL with actual LinkedIn OAuth flow URL
+        //     window.location.href = "https://www.linkedin.com/oauth/v2/authorization";
+        // }
+
+        // // Function to redirect user to a manual form
+        // function fillManually() {
+        //     alert("Redirecting to manual form...");
+        //     window.location.href = "manual_form.html"; // Redirect to your manual form page
+        // }
+    </script>
+
+</body>
+</html>
+

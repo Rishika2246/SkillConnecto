@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up / Log In</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 400px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group input:focus {
+            border-color: #2a9d8f;
+            outline: none;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            background-color: #21867a;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            color: #21867a;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Media Query for smaller devices */
+        @media (max-width: 500px) {
+            .container {
+                width: 100%;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Container for Sign Up / Log In forms -->
+    <div class="container">
+        <!-- Sign Up Form -->
+        <div id="signupForm">
+            <h2>Sign Up as a Client</h2>
+            <div class="form-group">
+                <label for="signupName">Name</label>
+                <input type="text" id="signupName" placeholder="Enter your name">
+                <div class="error" id="signupNameError">Please enter your name</div>
+            </div>
+            <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email">
+                <div class="error" id="signupEmailError">Please enter a valid email</div>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" placeholder="Enter a password">
+                <div class="error" id="signupPasswordError">Password must be at least 6 characters</div>
+            </div>
+            <button class="submit-btn" onclick="validateSignup()">Sign Up</button>
+            <div class="toggle-link" onclick="toggleForms()">Already have an account? Log In</div>
+        </div>
+
+        <!-- Log In Form -->
+        <div id="loginForm" style="display: none;">
+            <h2>Log In as a Client</h2>
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email">
+                <div class="error" id="loginEmailError">Please enter your email</div>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password">
+                <div class="error" id="loginPasswordError">Please enter your password</div>
+            </div>
+            <button class="submit-btn" onclick="validateLogin()">Log In</button>
+            <div class="toggle-link" onclick="toggleForms()">Don't have an account? Sign Up</div>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle between Sign Up and Log In forms
+        function toggleForms() {
+            let signupForm = document.getElementById('signupForm');
+            let loginForm = document.getElementById('loginForm');
+
+            if (signupForm.style.display === "none") {
+                signupForm.style.display = "block";
+                loginForm.style.display = "none";
+            } else {
+                signupForm.style.display = "none";
+                loginForm.style.display = "block";
+            }
+        }
+
+        // Validate Sign Up Form
+        function validateSignup() {
+            let name = document.getElementById('signupName').value;
+            let email = document.getElementById('signupEmail').value;
+            let password = document.getElementById('signupPassword').value;
+
+            let nameError = document.getElementById('signupNameError');
+            let emailError = document.getElementById('signupEmailError');
+            let passwordError = document.getElementById('signupPasswordError');
+
+            let isValid = true;
+
+            // Validate Name
+            if (name === "") {
+                nameError.style.display = "block";
+                isValid = false;
+            } else {
+                nameError.style.display = "none";
+            }
+
+            // Validate Email
+            if (!validateEmail(email)) {
+                emailError.style.display = "block";
+                isValid = false;
+            } else {
+                emailError.style.display = "none";
+            }
+
+            // Validate Password
+            if (password.length < 6) {
+                passwordError.style.display = "block";
+                isValid = false;
+            } else {
+                passwordError.style.display = "none";
+            }
+
+            if (isValid) {
+                window.location.href = "congC.html";
+            }
+        }
+
+        // Validate Log In Form
+        function validateLogin() {
+            let email = document.getElementById('loginEmail').value;
+            let password = document.getElementById('loginPassword').value;
+
+            let emailError = document.getElementById('loginEmailError');
+            let passwordError = document.getElementById('loginPasswordError');
+
+            let isValid = true;
+
+            // Validate Email
+            if (!validateEmail(email)) {
+                emailError.style.display = "block";
+                isValid = false;
+            } else {
+                emailError.style.display = "none";
+            }
+
+            // Validate Password
+            if (password === "") {
+                passwordError.style.display = "block";
+                isValid = false;
+            } else {
+                passwordError.style.display = "none";
+            }
+
+            if (isValid) {
+                window.location.href = "congC.html";
+            }
+        }
+
+        // Email Validation Regex
+        function validateEmail(email) {
+            let re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            return re.test(email);
+        }
+        
+    </script>
+
+</body>
+</html>

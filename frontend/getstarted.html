@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join as Client or Freelancer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px; /* Space between logo and title */
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo-container img {
+            height: 100px; /* Adjust height as needed */
+        }
+
+        .container {
+            text-align: center;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .title {
+            font-size: 34px;
+            margin-bottom: 50px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .hero button {
+            padding: 15px 30px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2a9d8f; /* Primary button color */
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            animation: buttonFadeIn 1.8s ease-in-out;
+        }
+
+        .hero button:hover {
+            background-color: #264653; /* Darker color on hover */
+            transform: scale(1.05); /* Slight scale on hover */
+        }
+
+        @keyframes buttonFadeIn {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .create-account {
+            display: block;
+            padding: 10px 20px;
+            background-color: #264653; /* Different button color */
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            animation: buttonFadeIn 2.2s ease-in-out;
+        }
+
+        .create-account:hover {
+            background-color: #131111; /* Darker shade on hover */
+            transform: scale(1.05); /* Slight scale on hover */
+        }
+
+        .cont {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-link {
+            margin-top: 50px;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+
+        .login-link a {
+            color: #07a4a4;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .login-link a:hover {
+            color: #264653; /* Change color on hover */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="logo3.png" alt="Logo">
+    </div>
+    <div class="container">
+        <div class="title">Join as a client or freelancer</div>
+        <div class="options">
+            <section class="hero">
+                <button onclick="window.location.href='loginC.html'">I'm a client hiring for a project</button>
+                <button onclick="window.location.href='loginF.html'">I'm a freelancer looking for work</button>
+            </section>
+        </div>
+        <!-- <div class="cont">
+            <button class="create-account" disabled>Create Account</button>
+        </div> -->
+        <div class="login-link">
+            Already have an account? <a href="#">Log In</a>
+        </div>
+    </div>
+</body>
+</html

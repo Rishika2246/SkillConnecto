@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Submission Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        legend {
+            font-weight: bold;
+        }
+
+        label {
+            margin-top: 10px;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #experience-container,
+        #education-container,
+        #projects-container {
+            margin-bottom: 20px;
+        }
+
+        .experience,
+        .education,
+        .project {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resume Submission Form</h1>
+        <form id="resumeForm" action="/submit" method="POST">
+            <fieldset>
+                <legend>Personal Information</legend>
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+                
+                <label for="linkedin">LinkedIn Profile URL:</label>
+                <input type="url" id="linkedin" name="linkedin">
+                
+                <label for="summary">Summary:</label>
+                <textarea id="summary" name="summary" rows="4" required></textarea>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Experience</legend>
+                <div id="experience-container">
+                    <div class="experience">
+                        <label for="job-title">Job Title:</label>
+                        <input type="text" id="job-title" name="job-title[]" required>
+                        
+                        <label for="company">Company:</label>
+                        <input type="text" id="company" name="company[]" required>
+                        
+                        <label for="duration">Duration:</label>
+                        <input type="text" id="duration" name="duration[]" required>
+                        
+                        <label for="responsibilities">Responsibilities:</label>
+                        <textarea id="responsibilities" name="responsibilities[]" rows="3" required></textarea>
+                    </div>
+                </div>
+                <button type="button" id="add-experience">Add Another Job</button>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Education</legend>
+                <div id="education-container">
+                    <div class="education">
+                        <label for="degree">Degree:</label>
+                        <input type="text" id="degree" name="degree[]" required>
+                        
+                        <label for="institution">Institution:</label>
+                        <input type="text" id="institution" name="institution[]" required>
+                        
+                        <label for="grad-year">Graduation Year:</label>
+                        <input type="number" id="grad-year" name="grad-year[]" required>
+                    </div>
+                </div>
+                <button type="button" id="add-education">Add Another Degree</button>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Projects</legend>
+                <div id="projects-container">
+                    <div class="project">
+                        <label for="project-title">Project Title:</label>
+                        <input type="text" id="project-title" name="project-title[]" required>
+                        
+                        <label for="project-url">Project URL:</label>
+                        <input type="url" id="project-url" name="project-url[]" required>
+                    </div>
+                </div>
+                <button type="button" id="add-project">Add Another Project</button>
+            </fieldset>
+            
+            <button type="submit">Submit Resume</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const addExperienceButton = document.getElementById('add-experience');
+            const experienceContainer = document.getElementById('experience-container');
+            
+            addExperienceButton.addEventListener('click', () => {
+                const newExperience = document.createElement('div');
+                newExperience.classList.add('experience');
+                newExperience.innerHTML = `
+                    <label for="job-title">Job Title:</label>
+                    <input type="text" id="job-title" name="job-title[]" required>
+                    
+                    <label for="company">Company:</label>
+                    <input type="text" id="company" name="company[]" required>
+                    
+                    <label for="duration">Duration:</label>
+                    <input type="text" id="duration" name="duration[]" required>
+                    
+                    <label for="responsibilities">Responsibilities:</label>
+                    <textarea id="responsibilities" name="responsibilities[]" rows="3" required></textarea>
+                `;
+                experienceContainer.appendChild(newExperience);
+            });
+            
+            const addEducationButton = document.getElementById('add-education');
+            const educationContainer = document.getElementById('education-container');
+            
+            addEducationButton.addEventListener('click', () => {
+                const newEducation = document.createElement('div');
+                newEducation.classList.add('education');
+                newEducation.innerHTML = `
+                    <label for="degree">Degree:</label>
+                    <input type="text" id="degree" name="degree[]" required>
+                    
+                    <label for="institution">Institution:</label>
+                    <input type="text" id="institution" name="institution[]" required>
+                    
+                    <label for="grad-year">Graduation Year:</label>
+                    <input type="number" id="grad-year" name="grad-year[]" required>
+                `;
+                educationContainer.appendChild(newEducation);
+            });
+
+            const addProjectButton = document.getElementById('add-project');
+            const projectsContainer = document.getElementById('projects-container');
+            
+            addProjectButton.addEventListener('click', () => {
+                const newProject = document.createElement('div');
+                newProject.classList.add('project');
+                newProject.innerHTML = `
+                    <label for="project-title">Project Title:</label>
+                    <input type="text" id="project-title" name="project-title[]" required>
+                    
+                    <label for="project-url">Project URL:</label>
+                    <input type="url" id="project-url" name="project-url[]" required>
+                `;
+                projectsContainer.appendChild(newProject);
+            });
+            
+            const form = document.getElementById('resumeForm');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault(); // Prevent the default form submission
+                
+                // Display an alert message
+                alert('Your resume has been submitted successfully!');
+                
+                // Redirect to another page
+                window.location.href = 'dashB.html';
+            });
+        });
+    </script>
+</body>
+</html>

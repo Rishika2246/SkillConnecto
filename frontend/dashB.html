@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Job Posting Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(164, 165, 191);
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: #110e42;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #728eab;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 120vh;
+            background-color: #3a3b3c;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            transition: width 0.5s ease-in-out;
+            animation: slideInSidebar 1s ease-in-out;
+        }
+
+        .sidebar h2 {
+            color: #b6cae8;
+            text-align: center;
+            margin-bottom: 70px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            padding: 15px 10px;
+            color: #b1b1b1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s, transform 0.5s ease-in-out;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #4e4f50;
+            transform: translateX(30px);
+        }
+
+        .sidebar ul li i {
+            margin-right: 15px;
+        }
+
+        /* Sidebar Button */
+        .btn-sidebar {
+            background: none;
+            border: none;
+            color: #b1b1b1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 15px 10px;
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .btn-sidebar:hover {
+            background-color: #4e4f50;
+            color: white;
+        }
+
+        .btn-sidebar i {
+            margin-right: 15px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            transition: margin-left 0.9s ease-in-out;
+            animation: fadeInMain 1.5s ease-in-out;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 1.5s ease-in-out;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .profile:hover {
+            transform: scale(1.05);
+        }
+
+        .profile p {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .search-bar {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .search-bar input, .search-bar select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .job-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .job {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .job:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .job h3 {
+            margin: 10;
+            font-size: 1.25rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            color: white;
+            background-color: #110e42;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #7372af;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #007bff;
+        }
+
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        textarea {
+            height: 150px;
+        }
+
+        button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin-top: 1rem;
+            color: white;
+            background-color: #110e42;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* .pagination {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .pagination .btn {
+            display: inline-block;
+            margin: 0 0.5rem;
+        } */
+
+        .applications, .notifications {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .applications h2, .notifications h2 {
+            margin-bottom: 15px;
+        }
+
+        .notification-list, .application-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .notification-item, .application-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .notification-item:hover, .application-item:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+
+            .toggle-menu {
+                display: block;
+            }
+
+            .sidebar ul li span {
+                display: none;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInBottom {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInSidebar {
+            from {
+                opacity: 0;
+                transform: translateX(-250px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInMain {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        /* Profile Selection Modal Styles */
+        .profile-selection-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-selection-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .profile-selection-content h2 {
+            margin-bottom: 1rem;
+        }
+
+        .profile-selection-content button {
+            display: block;
+            margin: 0.5rem auto;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            color: white;
+            background-color: #110e42;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .profile-selection-content button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="dashB.html">Home</a>
+            <a href="joblisting.html">Job Listings</a>
+            <a href="jobappl.html">Job Applications</a>
+            <a href="chat.html">Messages</a>
+            <a href="#notifications">Notifications</a>
+            <a href="#profile" onclick="openProfileSelectionModal()">Profile</a>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>SKILLCONNECTO</h2>
+        <ul>
+            <li><button onclick="window.location.href='dashB.html'">Home</button></li>
+            <li><button onclick="window.location.href='joblisting.html'">Job Listings</button></li>
+            <li><button onclick="window.location.href='jobappl.html'">Job Applications</button></li>
+            <li><button onclick="window.location.href='chat.html'">Messages</button></li>
+            <li><button onclick="window.location.href='#'">Notifications</button></li>
+            <li><button onclick="openProfileSelectionModal()">Profile</button></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Job Dashboard</h1>
+            <div class="profile">
+                <img src="https://via.placeholder.com/50" alt="Profile Picture">
+                <p>John Doe</p>
+            </div>
+        </div>
+
+        <!-- Job Listings Section -->
+        <section id="jobs">
+            <h2>Job Listings</h2>
+            <div class="search-bar">
+                <input type="text" placeholder="Search jobs...">
+                <select>
+                    <option>Location</option>
+                    <option>New York</option>
+                    <option>San Francisco</option>
+                    <option>Los Angeles</option>
+                </select>
+            </div>
+            <div class="job-list">
+                <div class="job">
+                    <h3>Software Engineer</h3>
+                    <p>Location: San Francisco</p>
+                    <p>Description: A great opportunity for a skilled software engineer.</p>
+                    <a href="#" class="btn" onclick="openJobModal()">Apply</a>
+                </div>
+                <!-- More job entries can be added here -->
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section id="applications" class="applications">
+            <h2>Applications</h2>
+            <ul class="application-list">
+                <li class="application-item">
+                    <span>Software Engineer</span>
+                    <span>Status: Applied</span>
+                </li>
+                <!-- More application entries can be added here -->
+            </ul>
+        </section>
+
+        <!-- Notifications Section -->
+        <section id="notifications" class="notifications">
+            <h2>Notifications</h2>
+            <ul class="notification-list">
+                <li class="notification-item">
+                    <span>You have a new message from Jane Doe.</span>
+                    <span>Just now</span>
+                </li>
+                <!-- More notification entries can be added here -->
+            </ul>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            &copy; 2024 Job Dashboard. All rights reserved.
+        </footer>
+    </div>
+
+    <!-- Job Modal -->
+    <div id="jobModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeJobModal()">&times;</span>
+            <h2>Apply for Job</h2>
+            <form>
+                <label for="applicantName">Name</label>
+                <input type="text" id="applicantName" name="applicantName" required>
+
+                <label for="applicantEmail">Email</label>
+                <input type="email" id="applicantEmail" name="applicantEmail" required>
+
+                <label for="applicantMessage">Message</label>
+                <textarea id="applicantMessage" name="applicantMessage" required></textarea>
+
+                <button type="submit">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeLoginModal()">&times;</span>
+            <h2>Login</h2>
+            <form>
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" name="loginEmail" required>
+
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" name="loginPassword" required>
+
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Selection Modal -->
+    <div id="profileSelectionModal" class="profile-selection-modal">
+        <div class="profile-selection-content">
+            <h2>Select Profile Type</h2>
+            <button onclick="openProfilePage('client')">Client Profile</button>
+            <button onclick="openProfilePage('freelancer')">Freelancer Profile</button>
+        </div>
+    </div>
+
+    <!-- JavaScript for Modal Functionality -->
+    <script>
+        function openJobModal() {
+            document.getElementById('jobModal').style.display = 'flex';
+        }
+
+        function closeJobModal() {
+            document.getElementById('jobModal').style.display = 'none';
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function openProfileSelectionModal() {
+            document.getElementById('profileSelectionModal').style.display = 'flex';
+        }
+
+        function openProfilePage(profileType) {
+            document.getElementById('profileSelectionModal').style.display = 'none';
+            // Redirect to the appropriate profile page
+            if (profileType === 'client') {
+                window.location.href = 'profC.html'; // Replace with your client profile page URL
+            } else if (profileType === 'freelancer') {
+                window.location.href = 'profF.html'; // Replace with your freelancer profile page URL
+            }
+        }
+    </script>
+</body>
+</html>
