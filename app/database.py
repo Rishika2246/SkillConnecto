@@ -26,7 +26,7 @@
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
-MONGO_DATABASE_URL = "mongodb+srv://user_badri:badri@clusterbytebreakers.nempj.mongodb.net/?retryWrites=true&w=majority&appName=clusterbytebreakers"
+MONGO_DATABASE_URL = ""
 
 client = AsyncIOMotorClient(MONGO_DATABASE_URL)
 db = client.bytebreakers 
